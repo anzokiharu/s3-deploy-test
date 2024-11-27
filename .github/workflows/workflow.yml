@@ -6,7 +6,7 @@ on:
       - '**' # 全てのブランチへのプッシュ時に実行
 
 jobs:
-  build:
+  build-and-deploy:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
@@ -23,21 +23,6 @@ jobs:
       - name: Build the project
         run: npm run build
 
-      - name: Upload build artifacts
-        uses: actions/upload-artifact@v3
-        with:
-          name: dist
-          path: dist/ # ビルド成果物のディレクトリを指定
-
-  deploy:
-    runs-on: ubuntu-latest
-    needs: build # buildジョブが成功した後に実行
-    steps:
-      - name: Download build artifacts
-        uses: actions/download-artifact@v3
-        with:
-          name: dist
-
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v1
         with:
@@ -47,4 +32,4 @@ jobs:
 
       - name: Sync to S3
         run: |
-          aws s3 sync ./dist s3://anzokiharu.jp --delete
+          aws s3 sync dist/ s3://anzokiharu.jp --delete
