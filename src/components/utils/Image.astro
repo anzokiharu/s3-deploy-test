@@ -1,0 +1,15 @@
+---
+import { optimizeImage } from '@/utils/optimizeImage';
+import { serverConf } from '@/utils/serverConf';
+interface Props {
+  class?: string;
+  src: string;
+  alt: string;
+  [key: string]: any;
+}
+
+const { src, class: className, ...props } = Astro.props;
+const optimizedSrc = serverConf.IS_BUILD ? await optimizeImage(src) : src;
+---
+
+<img src={optimizedSrc} class={className} {...props} />

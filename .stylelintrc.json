@@ -1,0 +1,29 @@
+{
+  "plugins": ["stylelint-scss", "stylelint-prettier", "stylelint-selector-bem-pattern"],
+  "extends": ["stylelint-config-html/astro", "stylelint-config-standard-scss", "stylelint-config-sass-guidelines"],
+  "rules": {
+    "max-nesting-depth": null,
+    "selector-class-pattern": null,
+    "selector-id-pattern": null,
+    "prettier/prettier": true,
+    "color-hex-length": "short",
+    "font-family-name-quotes": "always-where-recommended",
+    "selector-pseudo-class-no-unknown": [true, { "ignorePseudoClasses": ["global"] }],
+    "selector-pseudo-element-no-unknown": [true, { "ignorePseudoElements": ["v-deep"] }],
+    "at-rule-empty-line-before": [
+      "always",
+      {
+        "except": ["blockless-after-same-name-blockless", "first-nested"],
+        "ignore": ["after-comment", "inside-block"],
+        "ignoreAtRules": ["include"]
+      }
+    ],
+    "plugin/selector-bem-pattern": {
+      "preset": "bem"
+    },
+    "selector-max-id": 2,
+    "alpha-value-notation": "number",
+    "no-descending-specificity": null
+  },
+  "customSyntax": "postcss-html"
+}

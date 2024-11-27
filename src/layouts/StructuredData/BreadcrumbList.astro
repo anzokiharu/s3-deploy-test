@@ -1,0 +1,29 @@
+---
+import { metaData } from '@/layouts/metadata.ts';
+const path = Astro.url.pathname;
+let pathList: string[] = [];
+const pathMatch = path.match(/[^/]+/g);
+if (pathMatch !== null) {
+  pathList = pathList.concat(pathMatch);
+}
+pathList.unshift('');
+
+let idPath = metaData.site.url;
+const schema = JSON.stringify({
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: pathList.map((item, index) => {
+    idPath += item + '/';
+    return {
+      '@type': 'ListItem',
+      position: index + 1,
+      item: {
+        '@id': idPath,
+        name: metaData.pages[item] ?? metaData.site.title,
+      },
+    };
+  }),
+});
+---
+
+<script type="application/ld+json" set:html={schema} is:inline />

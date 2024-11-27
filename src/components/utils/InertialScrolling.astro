@@ -1,0 +1,53 @@
+---
+---
+
+<div id="js-scroll-tg"><slot /></div>
+
+<style lang="scss">
+  #js-scroll-tg {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1;
+  }
+</style>
+
+<script>
+  import gsap from 'gsap';
+  const heightGuide = document.createElement('div');
+  type ScrollTargetPosition = {
+    y: number;
+  };
+  let scrollTargetPos: ScrollTargetPosition = {
+    y: 0,
+  };
+
+  const init = () => {
+    heightGuide.classList.add('js-height-guide');
+    document.body.appendChild(heightGuide);
+
+    window.requestAnimationFrame(() => {
+      update();
+    });
+  };
+
+  const update = () => {
+    const scrollTarget = document.getElementById('js-scroll-tg');
+    if (scrollTarget !== null && scrollTarget instanceof HTMLElement) {
+      const mainHeight = scrollTarget.offsetHeight;
+      heightGuide.style.height = `${mainHeight}px`;
+      const scroll = document.documentElement.scrollTop; // +1000
+      scrollTargetPos.y += (scroll - scrollTargetPos.y) * 0.06;
+
+      gsap.set(scrollTarget, {
+        y: -scrollTargetPos.y,
+      });
+      window.requestAnimationFrame(() => {
+        update();
+      });
+    }
+  };
+
+  init();
+</script>

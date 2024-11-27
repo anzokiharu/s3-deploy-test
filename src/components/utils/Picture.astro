@@ -1,0 +1,23 @@
+---
+import { optimizeImage } from '@/utils/optimizeImage';
+
+interface Props {
+  class?: string;
+  pcSrc: string;
+  spSrc: string;
+  alt: string;
+  [key: string]: any;
+}
+
+const isBuild = import.meta.env.SSR;
+const isProd = import.meta.env.MODE === 'production';
+
+const { pcSrc, spSrc, class: className, ...props } = Astro.props;
+const optimizedSrc = isBuild && isProd ? await optimizeImage(pcSrc) : pcSrc;
+const optimizedSrcSP = isBuild && isProd ? await optimizeImage(spSrc) : spSrc;
+---
+
+<picture>
+  <source media="(max-width: 767px)" srcset={optimizedSrcSP} />
+  <img src={optimizedSrc} class={className} {...props} />
+</picture>

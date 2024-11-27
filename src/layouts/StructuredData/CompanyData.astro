@@ -1,0 +1,35 @@
+---
+import { metaData } from '@/layouts/metadata.ts';
+//import path from 'path';
+
+/* interface Props {
+  path: string;
+} */
+//const { path } = Astro.props;
+const path = Astro.url.pathname;
+const schema = JSON.stringify({
+  '@context': 'http://schema.org',
+  '@type': 'Organization',
+  name: '会社名',
+  description: 'ほしいもを販売する会社です',
+  url: metaData.site.url + path,
+  logo: 'logoのurl',
+  contactPoint: {
+    '@type': 'ContactPoint',
+    email: '会社の問い合わせ先メアド',
+    contactType: 'お問い合わせ',
+    areaServed: 'JP',
+    availableLanguage: 'Japanese',
+  },
+  address: {
+    '@type': 'PostalAddress',
+    streetAddress: '南青山２丁目２０−４ ＳＡＴ－１ビル',
+    addressLocality: '港区',
+    addressRegion: '東京都',
+    postalCode: '107-0062',
+    addressCountry: 'JP',
+  },
+});
+---
+
+<script type="application/ld+json" set:html={schema} is:inline />

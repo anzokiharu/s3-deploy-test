@@ -1,0 +1,96 @@
+---
+import Image from '@/components/utils/Image.astro';
+const nav = [
+  {
+    copy: 'top',
+    href: '/',
+  },
+  {
+    copy: 'about',
+    href: '/about/',
+  },
+  {
+    copy: 'test',
+    href: '/test/',
+  },
+];
+---
+
+<header class="header">
+  <nav class="header__inner">
+    <a href="#" class="header__logo" aria-label="Top">
+      <h1>
+        <Image src={'/assets/images/favicon.svg'} alt="AstroTop" />
+      </h1>
+    </a>
+    <ul class="header__list">
+      {
+        nav.map((item) => {
+          return (
+            <li class="header__listItem">
+              <a href={item.href} title={item.copy} set:html={item.copy} />
+            </li>
+          );
+        })
+      }
+    </ul>
+  </nav>
+</header>
+
+<style lang="scss">
+  .header {
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    width: calc(100% - 40px);
+    height: 60px;
+    z-index: 2;
+    mix-blend-mode: difference;
+    background: rgb(255 255 255 / 0.1);
+    border-radius: 16px;
+    box-shadow: 0 4px 30px rgb(0 0 0 / 0.1);
+    backdrop-filter: blur(5.9px);
+    border: 1px solid rgb(255 255 255 / 0.1);
+    transform: translateX(-50%);
+  }
+
+  .header__inner {
+    width: 100%;
+    height: 100%;
+    padding: 0 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .header__logo {
+    width: 40px;
+    height: 40px;
+    display: block;
+  }
+
+  .header__logoImg {
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+
+  .header__list {
+    display: flex;
+    align-items: center;
+
+    .header__listItem {
+      &:not(:first-of-type) {
+        margin-left: 20px;
+      }
+
+      a {
+        color: utils.$colorWhite;
+        font-family: utils.$inter;
+        text-transform: uppercase;
+      }
+    }
+  }
+</style>
+
+<script></script>

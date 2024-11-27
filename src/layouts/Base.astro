@@ -1,0 +1,91 @@
+---
+export interface Props {
+  pageName: string;
+  noindex?: boolean;
+  canonical?: boolean;
+  notLangTranslate?: boolean;
+  structuredData?: 'CompanyData' | 'BreadcrumbList' | 'WebData';
+}
+import '../assets/style/base/_base.scss';
+import { TextConverter } from '@/utils/textConverter';
+import { metaData } from '@/layouts/metadata.ts';
+//import metaData from '@/layouts/metadata.json';
+import CompanyData from '@/layouts/StructuredData/CompanyData.astro';
+import BreadcrumbList from '@/layouts/StructuredData/BreadcrumbList.astro';
+import WebData from '@/layouts/StructuredData/WebData.astro';
+const { pageName, noindex, canonical, notLangTranslate, structuredData } = Astro.props;
+const title = TextConverter.plainify(metaData.pages[pageName].title);
+const description = TextConverter.plainify(metaData.pages[pageName].description);
+//const url = metaData.site.url + metaData.pages[pageName].path;
+const url = metaData.site.url + Astro.url.pathname;
+const icon = metaData.site.icon;
+const icon32 = metaData.site.icon32;
+const icon16 = metaData.site.icon16;
+const icon256 = metaData.site.icon256;
+const icon192 = metaData.site.icon192;
+const shortcutIcon = metaData.site.shortcutIcon;
+const image = metaData.site.image;
+const keywords = metaData.site.keywords;
+const video = metaData.site.video;
+const themeColor = metaData.site.themeColor;
+const statusBarStyle = metaData.site.statusBarStyle;
+const windowsBgColor = metaData.site.windowsBgColor;
+---
+
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content={themeColor.default} />
+    <meta name="theme-color" media="(prefers-color-scheme: light)" content={themeColor.light} />
+    <meta name="theme-color" media="(prefers-color-scheme: dark)" content={themeColor.dark} />
+    <meta name="msapplication-TileImage" content={image.url} />
+    <meta name="msapplication-TileColor" content={windowsBgColor} />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content={statusBarStyle} />
+    <meta name="apple-mobile-web-app-title" content={title} />
+    <meta name="format-detection" content="telephone=no" />
+    {icon !== '' && <link rel="icon" href={icon} />}
+    {icon32 !== '' && <link rel="icon" type="image/png" sizes="32x32" href={icon32} />}
+    {icon16 !== '' && <link rel="icon" type="image/png" sizes="16x16" href={icon16} />}
+    {icon256 !== '' && <link rel="icon" type="image/png" sizes="256x256" href={icon256} />}
+    {icon192 !== '' && <link rel="icon" type="image/png" sizes="192x192" href={icon192} />}
+    {shortcutIcon !== '' && <link rel="apple-touch-icon" href={shortcutIcon} />}
+    <title>{title}</title>
+    {notLangTranslate && <meta name="google" content="notranslate" />}
+    {noindex && <meta name="robots" content="noindex,nofollow" />}
+    {canonical && <link rel="canonical" href={url} />}
+    <meta name="description" content={description} />
+    <meta property="og:url" content={url} />
+    <meta property="og:type" content={metaData.site.type} />
+    {video.url !== '' && <meta property="og:video" content={video.url} />}
+    {video.url !== '' && <meta property="og:video:url" content={video.url} />}
+    {video.url !== '' && <meta property="og:video:secure_url" content={video.url} />}
+    {video.url !== '' && <meta property="og:video:width" content={String(video.width)} />}
+    {video.url !== '' && <meta property="og:video:height" content={String(video.height)} />}
+    {video.url !== '' && <meta property="og:video:type" content={video.type} />}
+    <meta property="og:title" content={title} />
+    <meta property="og:image" content={image.url} />
+    <meta property="og:image:url" content={image.url} />
+    <meta property="og:image:secure_url" content={image.url} />
+    <meta property="og:image:type" content={image.type} />
+    <meta property="og:image:width" content={String(image.width)} />
+    <meta property="og:image:height" content={String(image.height)} />
+    <meta property="og:description" content={description} />
+    <meta property="og:site_name" content={title} />
+    <meta property="og:locale" content="ja_JP" />
+    {metaData.site.twitter.cardType && <meta name="twitter:card" content={metaData.site.twitter.cardType} />}
+    {metaData.site.twitter.userId && <meta name="twitter:site" content={metaData.site.twitter.userId} />}
+    <meta name="twitter:url" content={url} />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={image.url} />
+    <meta name="keywords" content={keywords} />
+    {structuredData && structuredData == 'CompanyData' && <CompanyData />}
+    {structuredData && structuredData == 'BreadcrumbList' && <BreadcrumbList />}
+    {structuredData && structuredData == 'WebData' && <WebData />}
+  </head>
+  <body>
+    <slot />
+  </body>
+</html>

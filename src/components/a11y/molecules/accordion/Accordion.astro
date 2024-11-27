@@ -1,0 +1,90 @@
+---
+import { Utils } from '@/utils/utils';
+interface Props {
+  class?: string;
+  id?: string;
+  transition?: string;
+}
+
+const { class: className, id, transition, ...props } = Astro.props;
+const uuid = Utils.getUuid();
+const accordionTransition = transition || 'all 0.3s ease';
+---
+
+<div id={id} class:list={['accordion', className]} {...props}>
+  <button
+    class="accordion__trigger js-accordionTrigger"
+    aria-expanded="false"
+    aria-controls={uuid}
+    type="button"
+    {...props}
+  >
+    <slot name="top" />
+  </button>
+  <div id={uuid} class="accordion__panel is-hidden" role="region" aria-labelledby={id} {...props}>
+    <div class="accordion__panelInner" {...props}>
+      <slot name="body" />
+    </div>
+  </div>
+</div>
+<style lang="scss" define:vars={{ transition: accordionTransition }}>
+  .accordion__trigger {
+    width: 100%;
+  }
+
+  .accordion__panel {
+    width: 100%;
+    height: auto;
+    display: grid;
+    grid-template-rows: 1fr;
+    transition: var(--transition);
+
+    &.is-hidden {
+      grid-template-rows: 0fr;
+      transition: var(--transition);
+    }
+  }
+
+  .accordion__panelInner {
+    overflow: hidden;
+  }
+</style>
+<script>
+  const accordions = document.querySelectorAll('.accordion .js-accordionTrigger');
+  class accordionClass {
+    el: HTMLElement;
+    HIDDEN_CLASS: string;
+    controls: string;
+    panel: HTMLElement | null;
+    constructor(el: HTMLElement) {
+      this.el = el;
+      this.HIDDEN_CLASS = 'is-hidden';
+      this.controls = this.el.getAttribute('aria-controls') as string;
+      this.panel = document.getElementById(this.controls);
+      this.el.addEventListener('click', this._toggleAccordion.bind(this));
+      this.el.addEventListener('keydown', this._handleKeydown.bind(this)); // キーボード対応
+    }
+
+    _toggleAccordion() {
+      const isOpen = this.el.getAttribute('aria-expanded') === 'true';
+      if (isOpen) {
+        this.el.setAttribute('aria-expanded', 'false');
+        this.panel?.classList.add(this.HIDDEN_CLASS);
+      } else {
+        this.el.setAttribute('aria-expanded', 'true');
+        this.panel?.classList.remove(this.HIDDEN_CLASS);
+      }
+    }
+
+    _handleKeydown(event: KeyboardEvent) {
+      if (event.key === 'Enter' || event.key === ' ') {
+        event.preventDefault();
+        this._toggleAccordion();
+      }
+    }
+  }
+
+  accordions.forEach((accordion) => {
+    new accordionClass(accordion as HTMLElement);
+  });
+</script>

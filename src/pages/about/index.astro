@@ -1,0 +1,50 @@
+---
+import Base from '@/layouts/Base.astro';
+import Header from '@/components/Header.astro';
+import InertialScrolling from '@/components/utils/InertialScrolling.astro';
+---
+
+<Base pageName="test">
+  <Header />
+  <InertialScrolling>
+    <main class="main">
+      <h2 class="main__copy">Abouty</h2>
+    </main>
+  </InertialScrolling>
+</Base>
+
+<style lang="scss">
+  .main {
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    background-color: utils.$colorBlack;
+    text-align: center;
+
+    .main__copy {
+      margin-bottom: 8px;
+      color: utils.$colorWhite;
+      font-size: 70px;
+      line-height: 1;
+      font-family: utils.$inter;
+
+      @include utils.mq-down(md) {
+        margin-bottom: utils.vunitSp(12vw);
+        font-size: utils.vunitSp(40vw);
+      }
+
+      br {
+        display: none;
+        @include utils.mq-down(md) {
+          display: block;
+        }
+      }
+    }
+  }
+</style>
+
+<script>
+  import '/src/assets/scripts/main.ts';
+</script>
