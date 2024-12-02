@@ -3,7 +3,7 @@ name: Build and Deploy to S3
 on:
   push:
     branches:
-      - '**' # 全てのブランチへのプッシュ時に実行
+      - main
 
 jobs:
   build-and-deploy:
